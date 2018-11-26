@@ -11,8 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'FrontController@index');
 
-Route::get('home', 'HomeController@index');
+Route::get('home', 'FrontController@index');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/logout', 'Auth\LoginController@logout');
+
+Route::group(['prefix'=>'admin' , 'middleware'=>'auth'], function(){
+    Route::get('/', function () {
+        return view('admin.index');
+    })->name('admin.index');
+});
